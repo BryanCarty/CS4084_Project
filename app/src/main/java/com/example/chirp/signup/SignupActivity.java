@@ -238,6 +238,9 @@ public class SignupActivity extends AppCompatActivity {
         } else if (!password.equals(confirmPassword)) {
             confirmPasswordInputField.setEndIconVisible(false);
             etConfirmPassword.setError(getString(R.string.password_mismatch));
+        }  else if (password.length() < 8){
+            passwordInputField.setEndIconVisible(false);
+            etPassword.setError(getString(R.string.password_length_error));
         } else {
             progressBar.setVisibility(View.VISIBLE);
             final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

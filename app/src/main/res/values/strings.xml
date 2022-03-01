@@ -16,6 +16,7 @@
     <string name="user_created_successfully">User created successfully</string>
     <string name="enter_correct_email">Enter Correct Email</string>
     <string name="password_mismatch">Passwords do not match</string>
+    <string name="password_length_error">Password must be at least 8 characters</string>
     <string name="signup_failed">Signup Failed : %1$s</string>
     <string name="reset_password_instructions">Reset Password instructions has been sent on email : %1$s</string>
     <string name="close">Close</string>
