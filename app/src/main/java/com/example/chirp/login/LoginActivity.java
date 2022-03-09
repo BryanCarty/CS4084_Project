@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -101,10 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this , ResetPasswordActivity.class));
     }
 
-    //THE BELOW CODE REDIRECTS USER TO MAIN PAGE, ON OPENING APP, IF THE USER IS ALREADY LOGGED IN.
-    //IT'S CURRENTLY COMMENTED IN ORDER TO TEST LOGIN, REGISTER, FORGOTTON PASSWORD ACTIVITIES.
-    //UNCOMMENT WHEN LOGOUT BUTTON IS CREATED!
-   /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -118,5 +116,5 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-    }*/
+    }
 }

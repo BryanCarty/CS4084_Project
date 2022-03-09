@@ -29,4 +29,19 @@
     <string name="missing_confirm_password">Confitm password field empty</string>
     <string name="email_mismatch">Emails don\'t match</string>
     <string name="invalid_email">Email is invalid</string>
+    <string name="save">Save</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Log Out</string>
+    <string name="something_went_wrong">Something went wrong : %1$s</string>
+    <string name="change_picture">Change Picture</string>
+    <string name="remove_picture">Remove Picture</string>
+    <string name="photo_removed_successfully">Photo Removed Successfully</string>
+    <string name="password_changed_successfully">Password Changed Successfully</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="press_back_to_exit">Press back again to exit</string>
+    <string name="trending">Trending</string>
+    <string name="friend_feed">Friend Feed</string>
+    <string name="messages">Messages</string>
 </resources>
