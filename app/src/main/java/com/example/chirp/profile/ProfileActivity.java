@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri localFileUri, serverFileUri;
     private FirebaseAuth firebaseAuth;
     private View progressBar;
+    private Boolean errorUpdatingEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +121,18 @@ public class ProfileActivity extends AppCompatActivity {
     {
         if(etName.getText().toString().trim().equals(""))
         {
-            etName.setError(getString(R.string.enter_name));
+            etName.setError(getString(R.string.empty_name_field));
+        }else if(etEmail.getText().toString().trim().equals(""))
+        {
+            etEmail.setError(getString(R.string.empty_email_field));
         }
         else
         {
             if(localFileUri!=null)
-                updateNameAndPhoto();
+                updateNameEmailAndPhoto();
             else
-                updateOnlyName();
+                updateNameAndEmail();
+
         }
 
     }
@@ -248,8 +254,10 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-    private void updateNameAndPhoto()
+    private void updateNameEmailAndPhoto()
     {
+        errorUpdatingEmail = false;
+
         String strFileName= firebaseUser.getUid() + ".jpg";
 
         final  StorageReference fileRef = fileStorage.child("images/"+ strFileName);
@@ -263,8 +271,20 @@ public class ProfileActivity extends AppCompatActivity {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            serverFileUri = uri;
+                            firebaseUser.updateEmail(etEmail.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (!task.isSuccessful()) {
+                                        errorUpdatingEmail = true;
+                                        Toast.makeText(ProfileActivity.this, getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            if (errorUpdatingEmail){
+                                return;
+                            }
 
+                            serverFileUri = uri;
                             UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(etName.getText().toString().trim())
                                     .setPhotoUri(serverFileUri)
@@ -281,31 +301,47 @@ public class ProfileActivity extends AppCompatActivity {
 
                                         hashMap.put(NodeNames.NAME, etName.getText().toString().trim());
                                         hashMap.put(NodeNames.PHOTO, serverFileUri.getPath());
+                                        hashMap.put(NodeNames.EMAIL, etEmail.getText().toString().trim());
 
-                                        databaseReference.child(userID).setValue(hashMap)
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                        finish();
-                                                    }
-                                                });
-
-
+                                        databaseReference.child(userID).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(ProfileActivity.this, getString(R.string.successful_update), Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+                                        });
                                     } else {
-                                        Toast.makeText(ProfileActivity.this,
-                                                getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProfileActivity.this, getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
                         }
                     });
-                }}});
-
+                }else{
+                    Toast.makeText(ProfileActivity.this, getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    private void updateOnlyName() {
+
+
+    private void updateNameAndEmail() {
+        errorUpdatingEmail = false;
+
+        firebaseUser.updateEmail(etEmail.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (!task.isSuccessful()) {
+                    errorUpdatingEmail = true;
+                    Toast.makeText(ProfileActivity.this, getString(R.string.failed_to_update_profile), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        if (errorUpdatingEmail){
+            return;
+        }
+
         progressBar.setVisibility(View.VISIBLE);
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                 .setDisplayName(etName.getText().toString().trim())
@@ -322,6 +358,7 @@ public class ProfileActivity extends AppCompatActivity {
                     HashMap<String, String> hashMap = new HashMap<>();
 
                     hashMap.put(NodeNames.NAME, etName.getText().toString().trim());
+                    hashMap.put(NodeNames.EMAIL, etEmail.getText().toString().trim());
 
                     databaseReference.child(userID).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -329,11 +366,8 @@ public class ProfileActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-
-
                 } else {
-                    Toast.makeText(ProfileActivity.this,
-                            getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this, getString(R.string.failed_to_update_profile, task.getException()), Toast.LENGTH_SHORT).show();
                 }
             }
         });
