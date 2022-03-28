@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.chirp.Common.NodeNames;
 import com.example.chirp.feed_page.FriendContentFeedFragment;
+import com.example.chirp.friends.NewFriendActivity;
+import com.example.chirp.posts.NewPostActivity;
 import com.example.chirp.private_messages_page.PrivateMessagesFragment;
 import com.example.chirp.profile.ProfileActivity;
 import com.example.chirp.trending_page.TrendingFragment;
@@ -122,6 +125,10 @@ public class MainActivity extends AppCompatActivity {
         if(id==R.id.mnuProfile)
         {
             startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+        }else if(id==R.id.addFriend){
+            startActivity(new Intent(MainActivity.this, NewFriendActivity.class));
+        }else if(id==R.id.addPost){
+            startActivity(new Intent(MainActivity.this, NewPostActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

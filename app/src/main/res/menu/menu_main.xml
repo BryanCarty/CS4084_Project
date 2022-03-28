@@ -3,8 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/addFriend"
+        android:icon="@drawable/ic_add_friend"
+        android:title="@string/friend"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/addPost"
+        android:icon="@drawable/ic_make_post"
+        android:title="@string/post"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/mnuProfile"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"
         app:showAsAction="ifRoom" />
+
+
 </menu>

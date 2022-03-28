@@ -47,4 +47,10 @@
     <string name="empty_email_field">Email field empty</string>
     <string name="successful_update">User updated successfully</string>
     <string name="empty_name_field">Empty name field</string>
+    <string name="post">Add Post</string>
+    <string name="friend">Add Friend</string>
+    <string name="post_title">Post Title</string>
+    <string name="post_content">Post Content</string>
+    <string name="postText">Post</string>
+    <string name="search_for_friend">Search for a friend</string>
 </resources>
