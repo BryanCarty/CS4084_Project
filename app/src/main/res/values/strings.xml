@@ -53,4 +53,13 @@
     <string name="post_content">Post Content</string>
     <string name="postText">Post</string>
     <string name="search_for_friend">Search for a friend</string>
+    <string name="empty_friends_list">Users will appear here...</string>
+    <string name="send_friend_request">Follow</string>
+    <string name="cancel_request">Unfollow</string>
+    <string name="request_sent_successfully">Follow Performed Successfully</string>
+    <string name="failed_to_send_request">Failed to perform Follow Successfully : %1$s</string>
+    <string name="request_cancelled_successfully">Unfollow successful</string>
+    <string name="failed_to_cancel_request">Failed To Cancel Follow : %1$s</string>
+    <string name="failed_to_send_notification">Failed To Send Notification : %1$s</string>
+    <string name="failed_to_fetch_friends">Failed to fetch users : %1$s</string>
 </resources>

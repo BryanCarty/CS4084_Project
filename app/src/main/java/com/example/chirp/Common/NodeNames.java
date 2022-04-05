@@ -3,7 +3,7 @@ package com.example.chirp.Common;
 public class NodeNames {
 
     public static final String USERS = "Users";
-    public static final String FRIEND_REQUESTS ="FriendRequests" ;
+    public static final String Follows ="Follows" ;
     public static final String CHATS ="Chats" ;
     public static final String MESSAGES = "Messages";
     public static final String TOKENS = "Tokens";

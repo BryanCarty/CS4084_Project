@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, ProfileActivity.class));
         }else if(id==R.id.addFriend){
             startActivity(new Intent(MainActivity.this, NewFriendActivity.class));
+
         }else if(id==R.id.addPost){
             startActivity(new Intent(MainActivity.this, NewPostActivity.class));
         }

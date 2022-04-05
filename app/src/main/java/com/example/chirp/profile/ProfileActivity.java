@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.chirp.Common.NodeNames;
 import com.example.chirp.R;
+import com.example.chirp.SplashActivity;
 import com.example.chirp.login.LoginActivity;
 import com.example.chirp.password.ChangePasswordActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -99,8 +101,10 @@ public class ProfileActivity extends AppCompatActivity {
                 if(task.isSuccessful())
                 {
                     firebaseAuth.signOut();
-                    startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
-                    finish();
+
+                    //startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                    //finish();
+                    finishAffinity();
                 }
                 else
                 {
