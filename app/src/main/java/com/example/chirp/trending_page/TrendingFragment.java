@@ -1,5 +1,6 @@
 package com.example.chirp.trending_page;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,8 +36,9 @@ import java.util.ListIterator;
 public class TrendingFragment extends Fragment {
 
     RecyclerView recyclerView;
-    ArrayList<ModelPost> posts = new ArrayList<>();
+    ArrayList<ModelPost> posts;
     HomePostsAdapter adapter;
+    String TAG = "TRENDING";
 
     public TrendingFragment() {
         // Required empty public constructor
@@ -49,6 +52,12 @@ public class TrendingFragment extends Fragment {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         DatabaseReference postsref = db.child("posts");
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("posts")) {
+            posts = new ArrayList<>();
+        } else {
+            posts = savedInstanceState.getParcelableArrayList("posts");
+        }
 
         postsref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -66,9 +75,15 @@ public class TrendingFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("TRENDING","Read Failed: " + error.getCode());
+                Log.e(TAG,"Read Failed: " + error.getCode());
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("posts", posts);
     }
 
     @Override
@@ -81,6 +96,9 @@ public class TrendingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) getView().findViewById(R.id.homePostsRecycler);
+        adapter = new HomePostsAdapter(getContext(), posts);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onViewCreated(view, savedInstanceState);
     }
 }
