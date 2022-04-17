@@ -11,16 +11,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="4dp"
+        app:cardCornerRadius="6dp"
         app:cardElevation="2dp"
         app:contentPadding="10dp"
 
-        app:strokeWidth="1dp"
+        app:strokeWidth="2dp"
         app:strokeColor="@color/black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/postProfileImage"
@@ -57,9 +57,10 @@
             <TextView
                 android:id="@+id/postContent"
                 android:layout_width="373dp"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -69,11 +70,12 @@
             <TextView
                 android:id="@+id/postTitle"
                 android:layout_width="373dp"
-                android:layout_height="23dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="15dp"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Title"
                 android:textAlignment="textStart"
                 android:textSize="16sp"

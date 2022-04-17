@@ -37,30 +37,38 @@ public class NewPostActivity extends AppCompatActivity {
         TextInputEditText etTitle = findViewById(R.id.postTitle);
         TextInputEditText etContent = findViewById(R.id.postContent);
 
-        HashMap post = new HashMap();
-        post.put("title", etTitle.getText().toString());
-        post.put("content", etContent.getText().toString());
-        post.put("timeSent", Timestamp.now().getSeconds());
-        post.put("userID", firebaseUser.getUid());
-        post.put("userImage", firebaseUser.getPhotoUrl().toString());
-        post.put("userName", firebaseUser.getDisplayName());
+        if(etTitle.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please enter a title", Toast.LENGTH_LONG).show();
+        } else if(etContent.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please enter Post description", Toast.LENGTH_LONG).show();
+        } else {
+            HashMap post = new HashMap();
+            post.put("title", etTitle.getText().toString());
+            post.put("content", etContent.getText().toString());
+            post.put("timeSent", Timestamp.now().getSeconds());
+            post.put("userID", firebaseUser.getUid());
+            post.put("userImage", firebaseUser.getPhotoUrl().toString());
+            post.put("userName", firebaseUser.getDisplayName());
 
 
-        DatabaseReference newPostRef = db.child("posts").push();
-        newPostRef.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Chirp Published", Toast.LENGTH_LONG).show();
-                Log.d("NEWPOST", "User has created new post");
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Chirp Failed", Toast.LENGTH_LONG).show();
-            }
-        });
+            DatabaseReference newPostRef = db.child("posts").push();
+            newPostRef.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getApplicationContext(), "Chirp Published", Toast.LENGTH_LONG).show();
+                    Log.d("NEWPOST", "User has created new post");
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "Chirp Failed", Toast.LENGTH_LONG).show();
+                }
+            });
 
-        finish();
+            finish();
+        }
+
+
     }
 }
