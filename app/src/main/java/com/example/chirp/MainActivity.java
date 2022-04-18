@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.chirp.Common.NodeNames;
 import com.example.chirp.feed_page.FriendContentFeedFragment;
 import com.example.chirp.friends.NewFriendActivity;
+import com.example.chirp.games.GamesMenuActivity;
 import com.example.chirp.posts.NewPostActivity;
 import com.example.chirp.private_messages_page.PrivateMessagesFragment;
 import com.example.chirp.profile.ProfileActivity;
@@ -130,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
         }else if(id==R.id.addPost){
             startActivity(new Intent(MainActivity.this, NewPostActivity.class));
+        }else if(id==R.id.playGame){
+            startActivity(new Intent(MainActivity.this, GamesMenuActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

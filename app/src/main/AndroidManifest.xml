@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chirp">
         <activity
+            android:name=".games.TicTacToeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".games.GamesMenuActivity"
+            android:exported="false" />
+        <activity
             android:name=".friends.NewFriendActivity"
             android:exported="false" />
         <activity
