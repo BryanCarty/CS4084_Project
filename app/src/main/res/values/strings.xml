@@ -26,7 +26,7 @@
     <string name="missing_email">Email field empty</string>
     <string name="missing_password">Password field empty</string>
     <string name="missing_name">Name field empty</string>
-    <string name="missing_confirm_password">Confitm password field empty</string>
+    <string name="missing_confirm_password">Confirm password field empty</string>
     <string name="email_mismatch">Emails don\'t match</string>
     <string name="invalid_email">Email is invalid</string>
     <string name="save">Save</string>
@@ -38,7 +38,6 @@
     <string name="photo_removed_successfully">Photo Removed Successfully</string>
     <string name="password_changed_successfully">Password Changed Successfully</string>
     <string name="profile">Profile</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="press_back_to_exit">Press back again to exit</string>
     <string name="trending">Trending</string>
@@ -54,14 +53,24 @@
     <string name="postText">Post</string>
     <string name="search_for_friend">Search for a friend</string>
     <string name="empty_friends_list">Users will appear here...</string>
-    <string name="send_friend_request">Follow</string>
-    <string name="cancel_request">Unfollow</string>
-    <string name="request_sent_successfully">Follow Performed Successfully</string>
-    <string name="failed_to_send_request">Failed to perform Follow Successfully : %1$s</string>
-    <string name="request_cancelled_successfully">Unfollow successful</string>
-    <string name="failed_to_cancel_request">Failed To Cancel Follow : %1$s</string>
+    <string name="send_friend_request">Send Friend Request</string>
+    <string name="cancel_request">Cancel Friend Request</string>
+    <string name="request_sent_successfully">Request Sent Successfully</string>
+    <string name="failed_to_send_request">Failed To Send Request : %1$s</string>
+    <string name="request_cancelled_successfully">Request Cancelled Successfully</string>
+    <string name="failed_to_cancel_request">Failed to cancel request : %1$s</string>
     <string name="failed_to_send_notification">Failed To Send Notification : %1$s</string>
     <string name="failed_to_fetch_friends">Failed to fetch users : %1$s</string>
     <string name="games">Games</string>
     <string name="request_sent">Request Sent Successfully</string>
+
+    <string name="empty_requests_list">You have no requests</string>
+    <string name="failed_to_fetch_friend_requests">Failed to fetch friend requests : %1$s</string>
+    <string name="accept">Accept</string>
+    <string name="deny">Deny</string>
+    <string name="request_denied_successfully">Request Denied Successfully</string>
+    <string name="failed_to_deny_request">Failed To Deny Request : %1$s</string>
+    <string name="failed_to_accept_request">Failed To Accept Request : %1$s</string>
+    <string name="send_request">Send Friend Request</string>
+    <string name="received_requests">Received Friend Requests</string>
 </resources>

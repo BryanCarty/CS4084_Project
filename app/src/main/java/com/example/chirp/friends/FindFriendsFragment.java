@@ -55,8 +55,6 @@ public class FindFriendsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_find_friends, container, false);
     }
 
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,7 +72,7 @@ public class FindFriendsFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
         currentUser  = FirebaseAuth.getInstance().getCurrentUser();
 
-        databaseReferenceFriendRequests = FirebaseDatabase.getInstance().getReference().child(NodeNames.Follows).child(currentUser.getUid());
+        databaseReferenceFriendRequests = FirebaseDatabase.getInstance().getReference().child(NodeNames.FRIEND_REQUESTS).child(currentUser.getUid());
 
         tvEmptyFriendsList.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -102,7 +100,7 @@ public class FindFriendsFragment extends Fragment {
                                 if(dataSnapshot.exists())
                                 {
                                     String requestType =  dataSnapshot.child(NodeNames.REQUEST_TYPE).getValue().toString();
-                                    if(requestType.equals(Constants.REQUEST_STATUS_RECEIVED))
+                                    if(requestType.equals(Constants.REQUEST_STATUS_SENT))
                                     {
                                         findFriendModelList.add(new FindFriendModel(fullName, photoName, userId, true));
                                         findFriendAdapter.notifyDataSetChanged();

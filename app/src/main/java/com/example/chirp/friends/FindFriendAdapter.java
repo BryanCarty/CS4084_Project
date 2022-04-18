@@ -52,14 +52,14 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
         return new FindFriendViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull final FindFriendAdapter.FindFriendViewHolder holder, int position) {
         final FindFriendModel friendModel = findFriendModelList.get(position);
 
         holder.tvFullName.setText(friendModel.getUserName());
-        String[] arrSplit = friendModel.getPhotoName().split("/");
-        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("images/"+arrSplit[arrSplit.length-1]);
+        String[] location = friendModel.getPhotoName().split("/");
+
+        StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("images/"+location[location.length-1]);
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -68,10 +68,11 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
                         .placeholder(R.drawable.default_profile)
                         .error(R.drawable.default_profile)
                         .into(holder.ivProfile);
+
             }
         });
 
-        friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child(NodeNames.Follows);
+        friendRequestDatabase = FirebaseDatabase.getInstance().getReference().child(NodeNames.FRIEND_REQUESTS);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if(friendModel.isRequestSent())
@@ -93,20 +94,21 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
                 userId = friendModel.getUserId();
 
                 friendRequestDatabase.child(currentUser.getUid()).child(userId).child(NodeNames.REQUEST_TYPE)
-                        .setValue(Constants.REQUEST_STATUS_RECEIVED).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        .setValue(Constants.REQUEST_STATUS_SENT).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if(task.isSuccessful())
                         {
                             friendRequestDatabase.child(userId).child(currentUser.getUid()).child(NodeNames.REQUEST_TYPE)
-                                    .setValue(Constants.REQUEST_STATUS_SENT).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .setValue(Constants.REQUEST_STATUS_RECEIVED).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful())
                                     {
 
                                         Toast.makeText(context, R.string.request_sent_successfully, Toast.LENGTH_SHORT).show();
+
 
                                         holder.btnSendRequest.setVisibility(View.GONE);
                                         holder.pbRequest.setVisibility(View.GONE);
@@ -218,4 +220,3 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
         }
     }
 }
-
