@@ -62,4 +62,6 @@
     <string name="failed_to_cancel_request">Failed To Cancel Follow : %1$s</string>
     <string name="failed_to_send_notification">Failed To Send Notification : %1$s</string>
     <string name="failed_to_fetch_friends">Failed to fetch users : %1$s</string>
+    <string name="games">Games</string>
+    <string name="request_sent">Request Sent Successfully</string>
 </resources>
