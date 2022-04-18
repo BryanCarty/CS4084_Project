@@ -31,4 +31,5 @@ public class NodeNames {
     public static final String LAST_MESSAGE_TIME = "last_message_time";
 
     public static final String TYPING = "typing" ;
+    public static final String FRIEND_REQUESTS = "FriendRequests";
 }
