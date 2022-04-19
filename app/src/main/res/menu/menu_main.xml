@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/playGame"
+        android:icon="@drawable/ic_play_game"
+        android:title="@string/games"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/addFriend"
+        android:icon="@drawable/ic_add_friend"
+        android:title="@string/friend"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/addPost"
+        android:icon="@drawable/ic_make_post"
+        android:title="@string/post"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/mnuProfile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"
+        app:showAsAction="always" />
+
+
+
+</menu>

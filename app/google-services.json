@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "245459422165",
+    "project_id": "cs4084project-162cb",
+    "storage_bucket": "cs4084project-162cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245459422165:android:3b97a7d8c048f7cdfd0b5c",
+        "android_client_info": {
+          "package_name": "com.example.chirp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245459422165-ru5bfu0durbdv02eeil25lbis7aos5le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASc2d4hCsfgTa81gfG7SmSI2g70mw8Hdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245459422165-ru5bfu0durbdv02eeil25lbis7aos5le.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
