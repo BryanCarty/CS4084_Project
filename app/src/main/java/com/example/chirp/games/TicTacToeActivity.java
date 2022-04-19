@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+//Tic Tac Toe class
 public class TicTacToeActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
