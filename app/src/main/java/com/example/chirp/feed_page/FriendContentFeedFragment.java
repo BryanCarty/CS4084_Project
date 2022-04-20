@@ -51,6 +51,7 @@ public class FriendContentFeedFragment extends Fragment {
 
         // GET FOLLOWS
         DatabaseReference friendsref = db.child("FriendRequests").child(firebaseUser.getUid());
+        DatabaseReference postsref = db.child("posts");
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) {
             posts = new ArrayList<>();
@@ -58,32 +59,7 @@ public class FriendContentFeedFragment extends Fragment {
             posts = savedInstanceState.getParcelableArrayList("friendPosts");
         }
 
-        friendsref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                friends.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Map<String, Object> td = (HashMap<String, Object>) ds.getValue();
-
-                    for(Map.Entry<String, Object> entry : td.entrySet()) {
-                        if(entry.getValue().toString().equals("accepted")) {
-                            friends.add(ds.getKey());
-                        }
-                    }
-                }
-                Log.d(TAG, friends.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-         //GET POSTS
-        DatabaseReference postsref = db.child("posts");
-
-        postsref.addValueEventListener(new ValueEventListener() {
+        ValueEventListener postsEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear();
@@ -102,9 +78,33 @@ public class FriendContentFeedFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("TRENDING","Read Failed: " + error.getCode());
+                Log.e(TAG,"Read Failed: " + error.getCode());
+            }
+        };
+        friendsref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                friends.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Map<String, Object> td = (HashMap<String, Object>) ds.getValue();
+
+                    for(Map.Entry<String, Object> entry : td.entrySet()) {
+                        if(entry.getValue().toString().equals("accepted")) {
+                            friends.add(ds.getKey());
+                        }
+                    }
+                }
+                Log.d(TAG, friends.toString());
+                postsref.addListenerForSingleValueEvent(postsEventListener);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
+
+        postsref.addValueEventListener(postsEventListener);
     }
 
     @Override
