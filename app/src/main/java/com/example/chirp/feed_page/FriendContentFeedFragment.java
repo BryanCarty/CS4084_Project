@@ -2,59 +2,115 @@ package com.example.chirp.feed_page;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chirp.R;
+import com.example.chirp.posts.ModelPost;
+import com.example.chirp.trending_page.HomePostsAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FriendContentFeedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class FriendContentFeedFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    RecyclerView recyclerView;
+    ArrayList<ModelPost> posts = new ArrayList<>();
+    ArrayList<String> friends = new ArrayList<>();
+    FriendContentFeedPostsAdapter adapter;
+    String TAG = "FRIENDSFEED";
 
     public FriendContentFeedFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FeedFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FriendContentFeedFragment newInstance(String param1, String param2) {
-        FriendContentFeedFragment fragment = new FriendContentFeedFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+
+        // GET FOLLOWS
+        DatabaseReference friendsref = db.child("FriendRequests").child(firebaseUser.getUid());
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) {
+            posts = new ArrayList<>();
+        } else {
+            posts = savedInstanceState.getParcelableArrayList("friendPosts");
         }
+
+        friendsref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                friends.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Map<String, Object> td = (HashMap<String, Object>) ds.getValue();
+
+                    for(Map.Entry<String, Object> entry : td.entrySet()) {
+                        if(entry.getValue().toString().equals("accepted")) {
+                            friends.add(ds.getKey());
+                        }
+                    }
+                }
+                Log.d(TAG, friends.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+         //GET POSTS
+        DatabaseReference postsref = db.child("posts");
+
+        postsref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                posts.clear();
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    ModelPost post = ds.getValue(ModelPost.class);
+
+                    if(friends.contains(post.userID)) {
+                        posts.add(post);
+                    }
+                }
+                Collections.reverse(posts);
+                adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TRENDING","Read Failed: " + error.getCode());
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("friendPosts", posts);
     }
 
     @Override
@@ -62,5 +118,14 @@ public class FriendContentFeedFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friend_content_feed, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        recyclerView = (RecyclerView) getView().findViewById(R.id.friendContentFeedPostsRecycler);
+        adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        super.onViewCreated(view, savedInstanceState);
     }
 }
