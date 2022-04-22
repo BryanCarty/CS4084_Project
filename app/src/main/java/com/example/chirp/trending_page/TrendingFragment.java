@@ -30,6 +30,9 @@ public class TrendingFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<ModelPost> posts;
     HomePostsAdapter adapter;
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference postsref = db.child("posts");
+    ValueEventListener postValueListener;
     String TAG = "TRENDING";
 
     public TrendingFragment() {
@@ -40,18 +43,13 @@ public class TrendingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // GET POSTS
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference postsref = db.child("posts");
-
         if(savedInstanceState == null || !savedInstanceState.containsKey("posts")) {
             posts = new ArrayList<>();
         } else {
             posts = savedInstanceState.getParcelableArrayList("posts");
         }
 
-        postsref.addValueEventListener(new ValueEventListener() {
+        postValueListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear();
@@ -69,7 +67,9 @@ public class TrendingFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG,"Read Failed: " + error.getCode());
             }
-        });
+        };
+
+        postsref.addValueEventListener(postValueListener);
     }
 
     @Override
@@ -92,5 +92,11 @@ public class TrendingFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        postsref.removeEventListener(postValueListener);
     }
 }
