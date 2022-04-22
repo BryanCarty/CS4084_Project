@@ -36,6 +36,11 @@ public class FriendContentFeedFragment extends Fragment {
     ArrayList<ModelPost> posts = new ArrayList<>();
     ArrayList<String> friends = new ArrayList<>();
     FriendContentFeedPostsAdapter adapter;
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference friendsref;
+    DatabaseReference postsref;
+    ValueEventListener friendsEventListener;
+    ValueEventListener postsEventListener;
     String TAG = "FRIENDSFEED";
 
     public FriendContentFeedFragment() {
@@ -47,11 +52,10 @@ public class FriendContentFeedFragment extends Fragment {
         super.onCreate(savedInstanceState);
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         // GET FOLLOWS
-        DatabaseReference friendsref = db.child("FriendRequests").child(firebaseUser.getUid());
-        DatabaseReference postsref = db.child("posts");
+        friendsref = db.child("FriendRequests").child(firebaseUser.getUid());
+        postsref = db.child("posts");
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) {
             posts = new ArrayList<>();
@@ -59,7 +63,7 @@ public class FriendContentFeedFragment extends Fragment {
             posts = savedInstanceState.getParcelableArrayList("friendPosts");
         }
 
-        ValueEventListener postsEventListener = new ValueEventListener() {
+        postsEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear();
@@ -81,7 +85,8 @@ public class FriendContentFeedFragment extends Fragment {
                 Log.e(TAG,"Read Failed: " + error.getCode());
             }
         };
-        friendsref.addValueEventListener(new ValueEventListener() {
+
+        friendsEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 friends.clear();
@@ -102,7 +107,8 @@ public class FriendContentFeedFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        friendsref.addValueEventListener(friendsEventListener);
 
         postsref.addValueEventListener(postsEventListener);
     }
@@ -127,5 +133,12 @@ public class FriendContentFeedFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        postsref.removeEventListener(postsEventListener);
+        friendsref.removeEventListener(friendsEventListener);
     }
 }
