@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chirp">
         <activity
+            android:name=".posts.ViewPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".chats.ChatActivity"
             android:exported="false" />
         <activity

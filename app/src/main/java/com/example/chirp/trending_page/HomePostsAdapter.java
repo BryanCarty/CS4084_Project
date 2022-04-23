@@ -59,6 +59,7 @@ public class HomePostsAdapter extends RecyclerView.Adapter<HomePostsAdapter.Post
         }
 
         Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
+        holder.postProfileImage.setTag(post.getUserImage());
     }
 
     @Override

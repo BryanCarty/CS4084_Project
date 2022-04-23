@@ -59,6 +59,7 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
         }
 
         Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
+        holder.postProfileImage.setTag(post.getUserImage());
     }
 
     @Override

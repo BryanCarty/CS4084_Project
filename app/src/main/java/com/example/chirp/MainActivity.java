@@ -2,8 +2,12 @@ package com.example.chirp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +22,7 @@ import com.example.chirp.feed_page.FriendContentFeedFragment;
 import com.example.chirp.friends.NewFriendActivity;
 import com.example.chirp.games.GamesMenuActivity;
 import com.example.chirp.posts.NewPostActivity;
+import com.example.chirp.posts.ViewPostActivity;
 import com.example.chirp.profile.ProfileActivity;
 import com.example.chirp.trending_page.TrendingFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
         setViewPager();
     }
+
+
     class Adapter extends FragmentPagerAdapter {
 
         public Adapter(@NonNull FragmentManager fm, int behavior) {
@@ -93,6 +100,25 @@ public class MainActivity extends AppCompatActivity {
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
+
+    public void cardViewPost(View view) {
+        Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
+        TextView title = view.findViewById(R.id.postTitle);
+        TextView content = view.findViewById(R.id.postContent);
+        TextView displayName = view.findViewById(R.id.postDisplayName);
+        TextView timeSent = view.findViewById(R.id.postTimeSent);
+        ImageView profileImage = view.findViewById(R.id.postProfileImage);
+
+        intent.putExtra("POST_TITLE", title.getText());
+        intent.putExtra("POST_CONTENT", content.getText());
+        intent.putExtra("POST_DISPLAY_NAME", displayName.getText());
+        intent.putExtra("POST_TIME_SENT", timeSent.getText());
+        intent.putExtra("POST_PROFILE_IMAGE", profileImage.getTag().toString());
+
+        startActivity(intent);
+
+        Log.d("MAINACTIVITY", title.getText().toString() + " was clicked");
     }
 
 
