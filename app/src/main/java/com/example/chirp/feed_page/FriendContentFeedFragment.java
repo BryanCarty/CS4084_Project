@@ -69,6 +69,7 @@ public class FriendContentFeedFragment extends Fragment {
                 posts.clear();
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     ModelPost post = ds.getValue(ModelPost.class);
+                    post.setPostID(ds.getKey());
 
                     if(friends.contains(post.userID)) {
                         posts.add(post);

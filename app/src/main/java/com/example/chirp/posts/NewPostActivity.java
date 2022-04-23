@@ -42,7 +42,7 @@ public class NewPostActivity extends AppCompatActivity {
         } else if(etContent.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please enter Post description", Toast.LENGTH_LONG).show();
         } else {
-            HashMap post = new HashMap();
+            HashMap<String, Object> post = new HashMap();
             post.put("title", etTitle.getText().toString());
             post.put("content", etContent.getText().toString());
             post.put("timeSent", Timestamp.now().getSeconds());

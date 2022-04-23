@@ -1,4 +1,4 @@
-package com.example.chirp.trending_page;
+package com.example.chirp.posts;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,30 +12,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chirp.R;
-import com.example.chirp.posts.ModelPost;
 
 import java.util.List;
 
-public class HomePostsAdapter extends RecyclerView.Adapter<HomePostsAdapter.PostViewHolder> {
+public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts.RepliesAdapter.PostViewHolder> {
 
     List<ModelPost> posts;
     Context context;
 
-    public  HomePostsAdapter(Context ct, List<ModelPost> posts) {
+    public  RepliesAdapter(Context ct, List<ModelPost> posts) {
         context = ct;
         this.posts = posts;
     }
 
     @NonNull
     @Override
-    public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public com.example.chirp.posts.RepliesAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.post_row, parent,false);
-        return new PostViewHolder(view);
+        return new com.example.chirp.posts.RepliesAdapter.PostViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull com.example.chirp.posts.RepliesAdapter.PostViewHolder holder, int position) {
         ModelPost post = posts.get(position);
 
         holder.postDisplayName.setText(post.getUserName());

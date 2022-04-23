@@ -13,6 +13,7 @@ public class ModelPost implements Parcelable {
     public String userID;
     public String userName;
     public String userImage;
+    public String postID;
 
     public ModelPost() {
     }
@@ -65,6 +66,14 @@ public class ModelPost implements Parcelable {
         this.userImage = userImage;
     }
 
+    public String getPostID() {
+        return postID;
+    }
+
+    public void setPostID(String postID) {
+        this.postID = postID;
+    }
+
     public ModelPost(String title, String content, Long timeSent, String userID, String userName, String userImage) {
         this.title = title;
         this.content = content;
@@ -81,6 +90,7 @@ public class ModelPost implements Parcelable {
         userID = in.readString();
         userName = in.readString();
         userImage = in.readString();
+        postID = in.readString();
     }
 
     @Override
@@ -96,6 +106,7 @@ public class ModelPost implements Parcelable {
         parcel.writeString(userID);
         parcel.writeString(userName);
         parcel.writeString(userImage);
+        parcel.writeString(postID);
     }
 
     public static final Parcelable.Creator<ModelPost> CREATOR = new Parcelable.Creator<ModelPost>() {

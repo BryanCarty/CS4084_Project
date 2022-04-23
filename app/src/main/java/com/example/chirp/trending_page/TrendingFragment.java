@@ -55,6 +55,7 @@ public class TrendingFragment extends Fragment {
                 posts.clear();
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     ModelPost post = ds.getValue(ModelPost.class);
+                    post.setPostID(ds.getKey());
                     posts.add(post);
                 }
                 Collections.reverse(posts);

@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("POST_DISPLAY_NAME", displayName.getText());
         intent.putExtra("POST_TIME_SENT", timeSent.getText());
         intent.putExtra("POST_PROFILE_IMAGE", profileImage.getTag().toString());
+        intent.putExtra("POST_ID", title.getTag().toString());
 
         startActivity(intent);
 
