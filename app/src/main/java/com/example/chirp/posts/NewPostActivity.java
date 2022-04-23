@@ -28,20 +28,28 @@ public class NewPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_post);
     }
 
+    /**
+     *
+     *  Onclick function for the "POST" button. Submits the details of the post to Firebase
+     *
+     * @param view
+     */
     public void btnMakePost(View view){
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        TextInputEditText etTitle = findViewById(R.id.postTitle);
-        TextInputEditText etContent = findViewById(R.id.postContent);
+        TextInputEditText etTitle = findViewById(R.id.postTitle); // Title of the user's post
+        TextInputEditText etContent = findViewById(R.id.postContent); // Content of the user's post
 
+        // Error handling to prevent empty title and content when posting
         if(etTitle.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please enter a title", Toast.LENGTH_LONG).show();
         } else if(etContent.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please enter Post description", Toast.LENGTH_LONG).show();
         } else {
+            // Hashmap holds details of the post
             HashMap<String, Object> post = new HashMap();
             post.put("title", etTitle.getText().toString());
             post.put("content", etContent.getText().toString());
@@ -51,13 +59,13 @@ public class NewPostActivity extends AppCompatActivity {
             post.put("userName", firebaseUser.getDisplayName());
 
 
-            DatabaseReference newPostRef = db.child("posts").push();
+            DatabaseReference newPostRef = db.child("posts").push(); // Generate a new entry on Firebase to hold the details of the post
             newPostRef.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(getApplicationContext(), "Chirp Published", Toast.LENGTH_LONG).show();
                     Log.d("NEWPOST", "User has created new post");
-                    finish();
+                    finish(); // Exit the activity upon success publish
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -65,8 +73,6 @@ public class NewPostActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Chirp Failed", Toast.LENGTH_LONG).show();
                 }
             });
-
-            finish();
         }
 
 

@@ -33,7 +33,7 @@ import java.util.Map;
 public class FriendContentFeedFragment extends Fragment {
 
     RecyclerView recyclerView;
-    ArrayList<ModelPost> posts = new ArrayList<>();
+    ArrayList<ModelPost> posts;
     ArrayList<String> friends = new ArrayList<>();
     FriendContentFeedPostsAdapter adapter;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
@@ -57,12 +57,7 @@ public class FriendContentFeedFragment extends Fragment {
         friendsref = db.child("FriendRequests").child(firebaseUser.getUid());
         postsref = db.child("posts");
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) {
-            posts = new ArrayList<>();
-        } else {
-            posts = savedInstanceState.getParcelableArrayList("friendPosts");
-        }
-
+        // Define the event listener that listens for new posts published to firebase
         postsEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -87,6 +82,7 @@ public class FriendContentFeedFragment extends Fragment {
             }
         };
 
+        // Define the event listener that listens for new friends made by the user
         friendsEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,15 +105,22 @@ public class FriendContentFeedFragment extends Fragment {
 
             }
         };
-        friendsref.addValueEventListener(friendsEventListener);
 
-        postsref.addValueEventListener(postsEventListener);
+        // Logic to handle the potential destruction of the fragment.
+        if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) { // There is no saved data -> Likely this is a fresh start
+            posts = new ArrayList<>();
+
+            friendsref.addValueEventListener(friendsEventListener);
+            postsref.addValueEventListener(postsEventListener);
+        } else { // There was data saved previously -> Restore it
+            posts = savedInstanceState.getParcelableArrayList("friendPosts");
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("friendPosts", posts);
+        outState.putParcelableArrayList("friendPosts", posts); // Save the arrayList of posts when the fragment is destroyed
     }
 
     @Override
@@ -129,7 +132,7 @@ public class FriendContentFeedFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.friendContentFeedPostsRecycler);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.friendContentFeedPostsRecycler); // Instantiate the recycler view for posts
         adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -139,6 +142,7 @@ public class FriendContentFeedFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // Remove event listeners
         postsref.removeEventListener(postsEventListener);
         friendsref.removeEventListener(friendsEventListener);
     }

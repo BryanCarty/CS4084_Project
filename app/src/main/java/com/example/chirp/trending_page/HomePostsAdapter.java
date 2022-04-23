@@ -36,11 +36,13 @@ public class HomePostsAdapter extends RecyclerView.Adapter<HomePostsAdapter.Post
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        ModelPost post = posts.get(position);
+        ModelPost post = posts.get(position); // Obtain current post
 
         holder.postDisplayName.setText(post.getUserName());
         holder.postTitle.setText(post.getTitle());
         holder.postContent.setText(post.getContent());
+
+        // Logic for formatting the time since the post was published
         Long timeSentInMillis = post.getTimeSent()*1000;
         Long currentTimeInMillis = System.currentTimeMillis();
         Long diff = currentTimeInMillis - timeSentInMillis;
@@ -58,8 +60,9 @@ public class HomePostsAdapter extends RecyclerView.Adapter<HomePostsAdapter.Post
             holder.postTimeSent.setText(String.format("%dd", diffInDays));
         }
 
+        // Load the profile image onto the post
         Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
-        holder.postProfileImage.setTag(post.getUserImage());
+        holder.postProfileImage.setTag(post.getUserImage()); // Store photo url for later access
         holder.postTitle.setTag(post.getPostID());
     }
 

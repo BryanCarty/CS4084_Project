@@ -46,6 +46,7 @@ public class ViewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
 
+        // Obtain fields to fill, and update them with the details from the Intent
         TextView title = findViewById(R.id.postTitle);
         TextView content = findViewById(R.id.postContent);
         TextView displayName = findViewById(R.id.postDisplayName);
@@ -60,47 +61,56 @@ public class ViewPostActivity extends AppCompatActivity {
         Glide.with(this).load(getIntent().getStringExtra("POST_PROFILE_IMAGE")).into(profileImage);
 
         DatabaseReference repliesRef = FirebaseDatabase.getInstance().getReference().child("replies").child(getIntent().getStringExtra("POST_ID"));
-        recyclerView = (RecyclerView) findViewById(R.id.repliesRecycler);
+        recyclerView = (RecyclerView) findViewById(R.id.repliesRecycler); // Instantiate recycler view for replies
         adapter = new RepliesAdapter(ViewPostActivity.this, replies);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(ViewPostActivity.this));
 
+        // Define event listener for replies
         ValueEventListener repliesEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                replies.clear();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    ModelPost post = ds.getValue(ModelPost.class);
-                    post.setPostID(ds.getKey());
-                    replies.add(post);
+                replies.clear(); // clear previous list of replies
+                for(DataSnapshot ds : snapshot.getChildren()) { // for every reply under the selected post
+                    ModelPost reply = ds.getValue(ModelPost.class); // parse the reply to a ModelPost object
+                    replies.add(reply); // then add the replies to the list
                 }
-                Collections.reverse(replies);
-                adapter = new RepliesAdapter(ViewPostActivity.this, replies);
+                Collections.reverse(replies); // order replies by the most recent
+                adapter = new RepliesAdapter(ViewPostActivity.this, replies); // instantiate the adapter using list of replies
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(ViewPostActivity.this));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("REPLIES", "Failed to load replies " + error.getMessage());
+                Log.e("REPLIES", "Failed to load replies " + error.getDetails());
             }
         };
 
         repliesRef.addValueEventListener(repliesEventListener);
     }
 
+    /**
+     *
+     * The onclick function for the "REPLY" Button. Will organise the reply details
+     * and submit the reply to Firebase
+     *
+     * @param view
+     */
     public void btnMakeReply(View view) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        TextView postTitle = findViewById(R.id.postTitle);
-        TextInputEditText replyContent = findViewById(R.id.postReplyContent);
+        TextView postTitle = findViewById(R.id.postTitle); // Title of the original post
+        TextInputEditText replyContent = findViewById(R.id.postReplyContent); // content of the user's reply
 
+        // Error handling to prevent empty replies being accepted
         if (replyContent.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please enter Reply description", Toast.LENGTH_LONG).show();
         } else {
+            // Hashmap to hold details of the reply
             HashMap<String, Object> reply = new HashMap();
             reply.put("title", "Re: " + postTitle.getText().toString());
             reply.put("content", replyContent.getText().toString());
@@ -109,8 +119,9 @@ public class ViewPostActivity extends AppCompatActivity {
             reply.put("userImage", firebaseUser.getPhotoUrl().toString());
             reply.put("userName", firebaseUser.getDisplayName());
 
-
+            // Create a new instance on Firebase to hold the reply details
             DatabaseReference newReplyRef = db.child("replies").child(getIntent().getStringExtra("POST_ID")).push();
+
             newReplyRef.setValue(reply).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {

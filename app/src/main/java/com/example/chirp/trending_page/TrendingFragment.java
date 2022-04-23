@@ -43,40 +43,42 @@ public class TrendingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("posts")) {
-            posts = new ArrayList<>();
-        } else {
-            posts = savedInstanceState.getParcelableArrayList("posts");
-        }
-
+        //Define the event listener for new posts from Firebase
         postValueListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                posts.clear();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    ModelPost post = ds.getValue(ModelPost.class);
+                posts.clear(); // Clear out the previous list
+                for(DataSnapshot ds : snapshot.getChildren()) { // For every child in the snapshot (every post)
+                    ModelPost post = ds.getValue(ModelPost.class); // parse the post into the ModelPost class
                     post.setPostID(ds.getKey());
                     posts.add(post);
                 }
-                Collections.reverse(posts);
-                adapter = new HomePostsAdapter(getContext(), posts);
+                Collections.reverse(posts); // order posts by most recently posted
+                adapter = new HomePostsAdapter(getContext(), posts); // pass posts list to the adapter
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG,"Read Failed: " + error.getCode());
+                Log.e(TAG,"Read Failed: " + error.getDetails());
             }
         };
 
-        postsref.addValueEventListener(postValueListener);
+        // Was data saved previously or is this a fresh boot
+        if(savedInstanceState == null || !savedInstanceState.containsKey("posts")) {
+            posts = new ArrayList<>();
+
+            postsref.addValueEventListener(postValueListener);
+        } else {
+            posts = savedInstanceState.getParcelableArrayList("posts");
+        }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("posts", posts);
+        outState.putParcelableArrayList("posts", posts); // Save posts list upon destruction of fragment
     }
 
     @Override
@@ -88,7 +90,7 @@ public class TrendingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) getView().findViewById(R.id.homePostsRecycler);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.homePostsRecycler); // Instantiate recycler view for posts
         adapter = new HomePostsAdapter(getContext(), posts);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

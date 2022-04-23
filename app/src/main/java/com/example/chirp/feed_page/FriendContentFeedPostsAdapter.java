@@ -36,11 +36,13 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-        ModelPost post = posts.get(position);
+        ModelPost post = posts.get(position); // Gets the current post
 
         holder.postDisplayName.setText(post.getUserName());
         holder.postTitle.setText(post.getTitle());
         holder.postContent.setText(post.getContent());
+
+        // Logic for formatting the time since the post was sent
         Long timeSentInMillis = post.getTimeSent()*1000;
         Long currentTimeInMillis = System.currentTimeMillis();
         Long diff = currentTimeInMillis - timeSentInMillis;
@@ -49,17 +51,17 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
         Long diffInHours = diffInMinutes / 60;
         Long diffInDays = diffInHours / 24;
         if(diffInSeconds < 60) {
-            holder.postTimeSent.setText(String.format("%ds", diffInSeconds));
+            holder.postTimeSent.setText(String.format("%ds", diffInSeconds)); // seconds
         } else if(diffInMinutes< 60) {
-            holder.postTimeSent.setText(String.format("%dm", diffInMinutes));
+            holder.postTimeSent.setText(String.format("%dm", diffInMinutes)); // minutes
         } else if(diffInHours < 24) {
-            holder.postTimeSent.setText(String.format("%dh", diffInHours));
+            holder.postTimeSent.setText(String.format("%dh", diffInHours)); // hours
         } else if(diffInDays < 365) {
-            holder.postTimeSent.setText(String.format("%dd", diffInDays));
+            holder.postTimeSent.setText(String.format("%dd", diffInDays)); // days
         }
 
-        Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
-        holder.postProfileImage.setTag(post.getUserImage());
+        Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage); // load profile image of post
+        holder.postProfileImage.setTag(post.getUserImage()); // store the url of the profile image for future access
         holder.postTitle.setTag(post.getPostID());
     }
 

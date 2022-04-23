@@ -5,6 +5,14 @@ import android.os.Parcelable;
 
 import com.google.firebase.Timestamp;
 
+/**
+ *
+ * Class designed to represent a post
+ *
+ * implements parcelable to facilitate simpler saving and retrieving of post data
+ * within fragments
+ *
+ */
 public class ModelPost implements Parcelable {
 
     public String title;

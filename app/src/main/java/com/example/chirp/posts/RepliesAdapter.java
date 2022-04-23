@@ -35,10 +35,12 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
 
     @Override
     public void onBindViewHolder(@NonNull com.example.chirp.posts.RepliesAdapter.PostViewHolder holder, int position) {
-        ModelPost post = posts.get(position);
+        ModelPost post = posts.get(position); // Gets the current post
 
         holder.postDisplayName.setText(post.getUserName());
         holder.postContent.setText(post.getContent());
+
+        // Logic for formatting the time since the post was published
         Long timeSentInMillis = post.getTimeSent()*1000;
         Long currentTimeInMillis = System.currentTimeMillis();
         Long diff = currentTimeInMillis - timeSentInMillis;
@@ -56,8 +58,9 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
             holder.postTimeSent.setText(String.format("%dd", diffInDays));
         }
 
+        // load the profile image onto the post
         Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
-        holder.postProfileImage.setTag(post.getUserImage());
+        holder.postProfileImage.setTag(post.getUserImage()); // store photo url as tag for access.
     }
 
     @Override

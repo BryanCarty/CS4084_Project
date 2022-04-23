@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
+    /**
+     *
+     *  The on click function for posts. Its purpose is to start a new activity
+     *  where the user can see the post and its replies.
+     *  Supplies necessary data through Intent
+     *
+     * @param view the card that was pressed
+     */
     public void cardViewPost(View view) {
         Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
         TextView title = view.findViewById(R.id.postTitle);
@@ -118,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("POST_ID", title.getTag().toString());
 
         startActivity(intent);
-
-        Log.d("MAINACTIVITY", title.getText().toString() + " was clicked");
     }
 
 
