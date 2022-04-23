@@ -29,7 +29,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
     @Override
     public com.example.chirp.posts.RepliesAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.post_row, parent,false);
+        View view = inflater.inflate(R.layout.reply_row, parent,false);
         return new com.example.chirp.posts.RepliesAdapter.PostViewHolder(view);
     }
 
@@ -38,7 +38,6 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
         ModelPost post = posts.get(position);
 
         holder.postDisplayName.setText(post.getUserName());
-        holder.postTitle.setText(post.getTitle());
         holder.postContent.setText(post.getContent());
         Long timeSentInMillis = post.getTimeSent()*1000;
         Long currentTimeInMillis = System.currentTimeMillis();
@@ -59,7 +58,6 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
 
         Glide.with(holder.itemView).load(post.getUserImage()).into(holder.postProfileImage);
         holder.postProfileImage.setTag(post.getUserImage());
-        holder.postTitle.setTag(post.getPostID());
     }
 
     @Override
@@ -69,12 +67,11 @@ public class RepliesAdapter extends RecyclerView.Adapter<com.example.chirp.posts
 
     public class PostViewHolder extends RecyclerView.ViewHolder{
 
-        TextView postTitle, postContent, postTimeSent, postDisplayName;
+        TextView postContent, postTimeSent, postDisplayName;
         ImageView postProfileImage;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-            postTitle = itemView.findViewById(R.id.postTitle);
             postContent = itemView.findViewById(R.id.postContent);
             postTimeSent = itemView.findViewById(R.id.postTimeSent);
             postDisplayName = itemView.findViewById(R.id.postDisplayName);
