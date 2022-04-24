@@ -51,12 +51,14 @@ public class ViewPostActivity extends AppCompatActivity {
         TextView content = findViewById(R.id.postContent);
         TextView displayName = findViewById(R.id.postDisplayName);
         TextView timeSent = findViewById(R.id.postTimeSent);
+        TextView replyCount = findViewById(R.id.repliesCount);
         ImageView profileImage = findViewById(R.id.postProfileImage);
 
         title.setText(getIntent().getStringExtra("POST_TITLE"));
         content.setText(getIntent().getStringExtra("POST_CONTENT"));
         displayName.setText(getIntent().getStringExtra("POST_DISPLAY_NAME"));
         timeSent.setText(getIntent().getStringExtra("POST_TIME_SENT"));
+        replyCount.setText(getIntent().getStringExtra("POST_REPLY_COUNT"));
 
         Glide.with(this).load(getIntent().getStringExtra("POST_PROFILE_IMAGE")).into(profileImage);
 

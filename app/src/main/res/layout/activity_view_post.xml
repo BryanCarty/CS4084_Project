@@ -129,6 +129,14 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <TextView
+        android:id="@+id/repliesCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="Replies"
+        android:textStyle="bold" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/repliesRecycler"
         android:layout_width="match_parent"
@@ -137,6 +145,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="3dp"
         tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="262dp" />
+        tools:layout_editor_absoluteY="262dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

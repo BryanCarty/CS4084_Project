@@ -34,6 +34,7 @@ public class TrendingFragment extends Fragment {
     DatabaseReference postsref = db.child("posts");
     ValueEventListener postValueListener;
     String TAG = "TRENDING";
+    Iterable<DataSnapshot> allPosts;
 
     public TrendingFragment() {
         // Required empty public constructor
@@ -42,21 +43,34 @@ public class TrendingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //Define the event listener for new posts from Firebase
         postValueListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear(); // Clear out the previous list
-                for(DataSnapshot ds : snapshot.getChildren()) { // For every child in the snapshot (every post)
-                    ModelPost post = ds.getValue(ModelPost.class); // parse the post into the ModelPost class
-                    post.setPostID(ds.getKey());
-                    posts.add(post);
-                }
-                Collections.reverse(posts); // order posts by most recently posted
-                adapter = new HomePostsAdapter(getContext(), posts); // pass posts list to the adapter
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                allPosts = snapshot.getChildren();
+                DatabaseReference repliesref = db.child("replies");
+                repliesref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snap) {
+                        for(DataSnapshot ds : allPosts) { // For every child in the snapshot (every post)
+                            ModelPost post = ds.getValue(ModelPost.class); // parse the post into the ModelPost class
+                            post.setPostID(ds.getKey());
+                            post.setReplyCount(snap.child(ds.getKey()).getChildrenCount());
+                            posts.add(post);
+                        }
+
+                        Collections.reverse(posts); // order posts by most recently posted
+                        adapter = new HomePostsAdapter(getContext(), posts); // pass posts list to the adapter
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG,"Failed to retrieve Post reply count: " + error.getDetails());
+                    }
+                });
             }
 
             @Override

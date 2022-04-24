@@ -22,6 +22,7 @@ public class ModelPost implements Parcelable {
     public String userName;
     public String userImage;
     public String postID;
+    public Long replyCount;
 
     public ModelPost() {
     }
@@ -81,6 +82,10 @@ public class ModelPost implements Parcelable {
     public void setPostID(String postID) {
         this.postID = postID;
     }
+
+    public Long getReplyCount() { return replyCount; }
+
+    public void setReplyCount(long replyCount) { this.replyCount = replyCount; }
 
     public ModelPost(String title, String content, Long timeSent, String userID, String userName, String userImage) {
         this.title = title;

@@ -87,6 +87,19 @@
                 app:layout_constraintHorizontal_bias="0.545"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postProfileImage" />
+
+            <TextView
+                android:id="@+id/repliesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Replies"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/postContent"
+                app:layout_constraintTop_toBottomOf="@+id/postContent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

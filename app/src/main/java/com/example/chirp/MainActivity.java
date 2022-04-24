@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         TextView content = view.findViewById(R.id.postContent);
         TextView displayName = view.findViewById(R.id.postDisplayName);
         TextView timeSent = view.findViewById(R.id.postTimeSent);
+        TextView replyCount = view.findViewById(R.id.repliesCount);
         ImageView profileImage = view.findViewById(R.id.postProfileImage);
 
         intent.putExtra("POST_TITLE", title.getText());
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("POST_TIME_SENT", timeSent.getText());
         intent.putExtra("POST_PROFILE_IMAGE", profileImage.getTag().toString());
         intent.putExtra("POST_ID", title.getTag().toString());
+        intent.putExtra("POST_REPLY_COUNT", replyCount.getText());
 
         startActivity(intent);
     }

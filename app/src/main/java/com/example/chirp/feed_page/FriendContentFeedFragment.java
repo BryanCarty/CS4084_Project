@@ -42,6 +42,7 @@ public class FriendContentFeedFragment extends Fragment {
     ValueEventListener friendsEventListener;
     ValueEventListener postsEventListener;
     String TAG = "FRIENDSFEED";
+    Iterable<DataSnapshot> allPosts;
 
     public FriendContentFeedFragment() {
         // Required empty public constructor
@@ -62,18 +63,33 @@ public class FriendContentFeedFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    ModelPost post = ds.getValue(ModelPost.class);
-                    post.setPostID(ds.getKey());
+                allPosts = snapshot.getChildren();
 
-                    if(friends.contains(post.userID)) {
-                        posts.add(post);
+                DatabaseReference repliesref = db.child("replies");
+                repliesref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds : allPosts) {
+                            ModelPost post = ds.getValue(ModelPost.class);
+                            post.setPostID(ds.getKey());
+                            post.setReplyCount(snapshot.child(ds.getKey()).getChildrenCount());
+
+                            if(friends.contains(post.userID)) {
+                                posts.add(post);
+                            }
+                        }
+
+                        Collections.reverse(posts);
+                        adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     }
-                }
-                Collections.reverse(posts);
-                adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
-                recyclerView.setAdapter(adapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG,"Failed to retrieve Post reply count: " + error.getDetails());
+                    }
+                });
             }
 
             @Override

@@ -41,6 +41,8 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
         holder.postDisplayName.setText(post.getUserName());
         holder.postTitle.setText(post.getTitle());
         holder.postContent.setText(post.getContent());
+        holder.postReplyCount.setText(String.format("Replies: %d", post.getReplyCount()));
+        holder.postReplyCount.setTag(post.getReplyCount());
 
         // Logic for formatting the time since the post was sent
         Long timeSentInMillis = post.getTimeSent()*1000;
@@ -72,7 +74,7 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
 
     public class PostViewHolder extends RecyclerView.ViewHolder{
 
-        TextView postTitle, postContent, postTimeSent, postDisplayName;
+        TextView postTitle, postContent, postTimeSent, postDisplayName, postReplyCount;
         ImageView postProfileImage;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -82,6 +84,7 @@ public class FriendContentFeedPostsAdapter extends RecyclerView.Adapter<FriendCo
             postTimeSent = itemView.findViewById(R.id.postTimeSent);
             postDisplayName = itemView.findViewById(R.id.postDisplayName);
             postProfileImage = itemView.findViewById(R.id.postProfileImage);
+            postReplyCount = itemView.findViewById(R.id.repliesCount);
         }
     }
 }
