@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.example.chirp.login.LoginActivity;
 
+/**
+ * This activity is responsible for launching the startup
+ * splash page animation.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private ImageView ivSplash;

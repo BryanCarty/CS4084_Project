@@ -24,7 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//Tic Tac Toe class
+/**
+ * This activity enables the running of the multiplayer
+ * game tic-tac-toe between users.
+ */
 public class TicTacToeActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -38,6 +41,10 @@ public class TicTacToeActivity extends AppCompatActivity {
     private ArrayList<Integer> playerTwoMoves = new ArrayList<Integer>();
     private String gameId = "";
 
+    /**
+     * The below code runs when the activity is created.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +59,11 @@ public class TicTacToeActivity extends AppCompatActivity {
         IncomingRequests();
     }
 
+    /**
+     * The below code runs when a user clicks one of the nine
+     * tic-tac-toe buttons
+     * @param view
+     */
     public void btnClick(View view){
 
         Button buttonSelected = (Button)view;
@@ -89,6 +101,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         databaseReference.child("Game").child(gameId).child(String.valueOf(btnId)).setValue(alterEmail(myEmail));
     }
 
+    /**
+     * The below code runs when a user clicks the request button
+     * @param view
+     */
     public void btnRequestEvent(View view){
         String otherUserEmail = alterEmail(otherUserEmailField.getText().toString());
         databaseReference.child("GameUsers").child(otherUserEmail).child("Request").push().setValue(alterEmail(myEmail));
@@ -96,6 +112,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         TicTacToeActivity.playerSymbol="X";
     }
 
+    /**
+     * The below code runs when a user clicks the accept button
+     * @param view
+     */
     public void btnAcceptEvent(View view){
         String otherUserEmail = alterEmail(otherUserEmailField.getText().toString());
         databaseReference.child("GameUsers").child(otherUserEmail).child("Request").push().setValue(alterEmail(myEmail));
@@ -103,6 +123,11 @@ public class TicTacToeActivity extends AppCompatActivity {
         TicTacToeActivity.playerSymbol="O";
     }
 
+    /**
+     * The below code listens for an entry in the database, signifying that
+     * a user made a move.
+     * @param gameId
+     */
     public void playerMoveListener(String gameId){
         this.gameId = gameId;
         databaseReference.child("Game").removeValue();
@@ -142,6 +167,11 @@ public class TicTacToeActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * The below code gets the button object specific
+     * to the passed button id.
+     * @param btnId
+     */
     private void autoPlay(int btnId) {
         Button selectedBtn = null;
         switch (btnId) {
@@ -176,6 +206,12 @@ public class TicTacToeActivity extends AppCompatActivity {
         playGame(btnId, selectedBtn);
     }
 
+    /**
+     * The below code tracks users moves and changes the UI
+     * to signify said moves.
+     * @param btnId
+     * @param selectedBtn
+     */
     private void playGame(int btnId, Button selectedBtn) {
         if(TicTacToeActivity.activePlayer == 2){
             Log.d("playGame:player1", Integer.toString(btnId));
@@ -194,6 +230,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         checkWinner();
     }
 
+    /**
+     * The below code checks to see if a user
+     * has won
+     */
     private void checkWinner() {
         int winner = -1;
 
@@ -275,6 +315,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The below code listens to the database for incoming
+     * game requests.
+     */
     public void IncomingRequests(){
         databaseReference.child("GameUsers").child(alterEmail(myEmail)).child("Request")
                 .addValueEventListener(new ValueEventListener() {
@@ -305,6 +349,13 @@ public class TicTacToeActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * As firebase doesn't permit the use of
+     * '.' in their database, the below code swaps out uses
+     * of '.' with '(dot)'.
+     * @param str
+     * @return
+     */
     public static String alterEmail(String str){
         String newString = "";
         for(int i=0; i<str.length(); i++){

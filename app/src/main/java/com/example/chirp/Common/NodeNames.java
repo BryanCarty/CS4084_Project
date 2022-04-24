@@ -1,5 +1,9 @@
 package com.example.chirp.Common;
 
+/**
+ * The NodeNames class stores constants that are used
+ * when interacting with the firebase database.
+ */
 public class NodeNames {
 
     public static final String USERS = "Users";

@@ -11,6 +11,12 @@ import android.widget.ListView;
 
 import com.example.chirp.R;
 
+/**
+ * This activity is responsible for showing the list of
+ * games available to play.
+ * On the clicking of a game in the list, the activity specific
+ * to that game is launched.
+ */
 public class GamesMenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
