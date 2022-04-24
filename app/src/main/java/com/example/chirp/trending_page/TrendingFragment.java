@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.chirp.R;
 import com.example.chirp.posts.ModelPost;
@@ -27,6 +28,7 @@ import java.util.Collections;
 
 public class TrendingFragment extends Fragment {
 
+    SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView recyclerView;
     ArrayList<ModelPost> posts;
     HomePostsAdapter adapter;
@@ -104,11 +106,28 @@ public class TrendingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = (RecyclerView) getView().findViewById(R.id.homePostsRecycler); // Instantiate recycler view for posts
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.trendingRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+
+                postsref.removeEventListener(postValueListener);
+                postsref.addValueEventListener(postValueListener);
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+
         adapter = new HomePostsAdapter(getContext(), posts);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 
     @Override
     public void onDestroy() {
