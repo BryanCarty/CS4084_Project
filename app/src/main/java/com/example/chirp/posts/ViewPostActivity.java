@@ -106,6 +106,7 @@ public class ViewPostActivity extends AppCompatActivity {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         TextView postTitle = findViewById(R.id.postTitle); // Title of the original post
+        TextView replyCount = findViewById(R.id.repliesCount);
         TextInputEditText replyContent = findViewById(R.id.postReplyContent); // content of the user's reply
 
         // Error handling to prevent empty replies being accepted
@@ -118,7 +119,11 @@ public class ViewPostActivity extends AppCompatActivity {
             reply.put("content", replyContent.getText().toString());
             reply.put("timeSent", Timestamp.now().getSeconds());
             reply.put("userID", firebaseUser.getUid());
-            reply.put("userImage", firebaseUser.getPhotoUrl().toString());
+            if(firebaseUser.getPhotoUrl() != null) {
+                reply.put("userImage", firebaseUser.getPhotoUrl().toString());
+            } else {
+                reply.put("userImage", "https://firebasestorage.googleapis.com/v0/b/cs4084project-162cb.appspot.com/o/assets%2Fdefault_profile.png?alt=media&token=c4c0d2e8-a938-403f-b97a-ad0b17537514");
+            }
             reply.put("userName", firebaseUser.getDisplayName());
 
             // Create a new instance on Firebase to hold the reply details

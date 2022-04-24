@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.ImageView;
@@ -202,6 +203,7 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                 .setDisplayName(etName.getText().toString().trim())
+                .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/cs4084project-162cb.appspot.com/o/assets%2Fdefault_profile.png?alt=media&token=c4c0d2e8-a938-403f-b97a-ad0b17537514"))
                 .build();
 
         firebaseUser.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -217,7 +219,7 @@ public class SignupActivity extends AppCompatActivity {
                     hashMap.put(NodeNames.NAME, etName.getText().toString().trim());
                     hashMap.put(NodeNames.EMAIL, etEmail.getText().toString().trim());
                     hashMap.put(NodeNames.ONLINE, "true");
-                    hashMap.put(NodeNames.PHOTO, "");
+                    hashMap.put(NodeNames.PHOTO, "/v0/b/cs4084project-162cb.appspot.com/o/assets/default_profile.png");
 
                     progressBar.setVisibility(View.VISIBLE);
                     databaseReference.child(userID).setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {

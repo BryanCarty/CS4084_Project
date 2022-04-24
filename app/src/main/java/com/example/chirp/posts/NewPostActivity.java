@@ -55,7 +55,12 @@ public class NewPostActivity extends AppCompatActivity {
             post.put("content", etContent.getText().toString());
             post.put("timeSent", Timestamp.now().getSeconds());
             post.put("userID", firebaseUser.getUid());
-            post.put("userImage", firebaseUser.getPhotoUrl().toString());
+            if(firebaseUser.getPhotoUrl() != null) {
+                post.put("userImage", firebaseUser.getPhotoUrl().toString());
+            } else {
+                post.put("userImage", "https://firebasestorage.googleapis.com/v0/b/cs4084project-162cb.appspot.com/o/assets%2Fdefault_profile.png?alt=media&token=c4c0d2e8-a938-403f-b97a-ad0b17537514");
+            }
+
             post.put("userName", firebaseUser.getDisplayName());
 
 
