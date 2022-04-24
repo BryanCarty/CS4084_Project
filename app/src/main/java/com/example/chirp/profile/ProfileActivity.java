@@ -248,7 +248,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                 .setDisplayName(etName.getText().toString().trim())
-                .setPhotoUri(null)
+                .setPhotoUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/cs4084project-162cb.appspot.com/o/assets%2Fdefault_profile.png?alt=media&token=c4c0d2e8-a938-403f-b97a-ad0b17537514"))
                 .build();
 
         firebaseUser.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -261,7 +261,7 @@ public class ProfileActivity extends AppCompatActivity {
                     databaseReference = FirebaseDatabase.getInstance().getReference().child(NodeNames.USERS);
 
                     HashMap<String, String> hashMap = new HashMap<>();
-                    hashMap.put(NodeNames.PHOTO, "");
+                    hashMap.put(NodeNames.PHOTO, "/v0/b/cs4084project-162cb.appspot.com/o/assets/default_profile.png");
 
                     databaseReference.child(userID).setValue(hashMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
