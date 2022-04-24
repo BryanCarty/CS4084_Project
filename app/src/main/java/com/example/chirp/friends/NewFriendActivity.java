@@ -23,11 +23,22 @@ import com.example.chirp.profile.ProfileActivity;
 import com.example.chirp.trending_page.TrendingFragment;
 import com.google.android.material.tabs.TabLayout;
 
+/**
+ * This activity contains a TabLayout.
+ * This activity is responsible for allowing the user to
+ * jump between the fragment responsible for sending friend
+ * requests and the fragment responsible for accepting/declining
+ * received requests.
+ */
 public class NewFriendActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
 
+    /**
+     * The below code executes when the activity is successfully created.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +54,12 @@ public class NewFriendActivity extends AppCompatActivity {
             super(fm, behavior);
         }
 
+        /**
+         * The below code is responsible for returning the fragment
+         * associated with the currently active tab.
+         * @param position
+         * @return
+         */
         @NonNull
         @Override
         public Fragment getItem(int position) {
@@ -66,8 +83,12 @@ public class NewFriendActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * The below code configures the TabLayout
+     */
     private void setViewPager(){
 
+        //adds the tab layouts
         tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.fragment_find_friends_tab));
         tabLayout.addTab(tabLayout.newTab().setCustomView(R.layout.fragment_requests_tab));
 

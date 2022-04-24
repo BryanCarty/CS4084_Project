@@ -18,8 +18,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * The Util class contains various static utility functions.
+ */
 public class Util {
+    /**
+     * Checks to see if the currently active default data network
+     * is available
+     * @param context
+     * @return
+     */
     public static boolean connectionAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

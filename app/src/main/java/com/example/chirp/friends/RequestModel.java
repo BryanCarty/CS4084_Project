@@ -1,7 +1,10 @@
 package com.example.chirp.friends;
 
+/**
+ * Below is the class used to define an
+ * entry in the accept/deny friend request recycler view.
+ */
 public class RequestModel {
-
 
     private  String userId;
     private  String userName;

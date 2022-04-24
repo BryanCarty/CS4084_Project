@@ -14,6 +14,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The below class facilitates the changing of a users password.
+ * This activity can be accessed from the profile activity.
+ * Validation of the entered text occurs before it's inserted
+ * into the database.
+ */
 public class ChangePasswordActivity extends AppCompatActivity {
     private TextInputEditText etPassword, etConfirmPassword;
     private View progressBar;
@@ -27,6 +33,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
     }
 
+    /**
+     * The below code executes when the user clicks the change
+     * password button.
+     * @param view
+     */
     public  void btnChangePasswordClick(View view)
     {
         String password = etPassword.getText().toString().trim();

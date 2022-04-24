@@ -31,6 +31,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+/**
+ * The below class is responsible for creating the received
+ * friend requests recycler view.
+ */
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestViewHolder> {
 
     private Context context;
@@ -38,7 +42,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
     private DatabaseReference databaseReferenceFriendRequests, databaseReferenceChats;
     private FirebaseUser currentUser;
 
-
+    /**
+     * RequestsAdapter Constructor
+     * @param context
+     * @param requestModelList
+     */
     public RequestAdapter(Context context, List<RequestModel> requestModelList) {
         this.context = context;
         this.requestModelList = requestModelList;
@@ -51,6 +59,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         return new RequestViewHolder(view);
     }
 
+    /**
+     * The below code executes on the binding of the view holder.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull final RequestAdapter.RequestViewHolder holder, int position) {
 
@@ -60,6 +73,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child(Constants.IMAGES_FOLDER + "/" +  requestModel.getPhotoName());
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            /**
+             * The below code executes when the download url for the specified file
+             * is acquired.
+             * @param uri
+             */
             @Override
             public void onSuccess(Uri uri) {
 
@@ -77,6 +95,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         holder.btnAcceptRequest.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The below code executes on the clicking of the accept
+             * friend requests button
+             * @param view
+             */
             @Override
             public void onClick(View view) {
                 holder.pbDecision.setVisibility(View.VISIBLE);
@@ -152,6 +175,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
 
 
         holder.btnDenyRequest.setOnClickListener(new View.OnClickListener() {
+            /**
+             * The below code executes on the clicking of the deny friend
+             * request button.
+             * @param view
+             */
             @Override
             public void onClick(View view) {
 
@@ -207,6 +235,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         });
     }
 
+    //Handles exception
     private void handleException(RequestViewHolder holder,  Exception exception) {
         Toast.makeText(context,  context.getString( R.string.failed_to_accept_request, exception) , Toast.LENGTH_SHORT).show();
         holder.pbDecision.setVisibility(View.GONE);
@@ -219,6 +248,10 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.RequestV
         return requestModelList.size();
     }
 
+    /**
+     * The below code is the request view holder
+     * used in the above class.
+     */
     public class RequestViewHolder extends  RecyclerView.ViewHolder {
 
         private TextView tvFullName;

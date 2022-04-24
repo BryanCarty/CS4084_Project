@@ -28,6 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Below is the fragment used by a user to accept/deny
+ * a friend request
+ */
 public class RequestsFragment extends Fragment {
 
     private RecyclerView rvRequests;
@@ -44,7 +48,6 @@ public class RequestsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +55,11 @@ public class RequestsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_requests, container, false);
     }
 
+    /**
+     * The below code executes when the view is created.
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

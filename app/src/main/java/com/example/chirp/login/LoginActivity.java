@@ -25,6 +25,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The below class allows the user to perform the necessary login
+ * functions.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail, etPassword;
@@ -45,10 +49,19 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The below code executes on the clicking of the signup button
+     * @param v
+     */
     public void tvSignupClick(View v)
     {
         startActivity(new Intent(this, SignupActivity.class));
     }
+
+    /**
+     * The below code executes on the clicking of the login button
+     * @param v
+     */
     public void btnLoginClick(View v)
     {
 
@@ -98,6 +111,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The below code executes when the reset password button is clicked.
+     * @param view
+     */
     public  void tvResetPasswordClick(View view){
         startActivity(new Intent(LoginActivity.this , ResetPasswordActivity.class));
     }
