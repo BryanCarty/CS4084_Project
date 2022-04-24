@@ -83,8 +83,6 @@ public class TrendingFragment extends Fragment {
         // Was data saved previously or is this a fresh boot
         if(savedInstanceState == null || !savedInstanceState.containsKey("posts")) {
             posts = new ArrayList<>();
-
-            postsref.addValueEventListener(postValueListener);
         } else {
             posts = savedInstanceState.getParcelableArrayList("posts");
         }
@@ -116,5 +114,17 @@ public class TrendingFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         postsref.removeEventListener(postValueListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        postsref.removeEventListener(postValueListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        postsref.addValueEventListener(postValueListener);
     }
 }

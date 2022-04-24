@@ -131,9 +131,6 @@ public class FriendContentFeedFragment extends Fragment {
         // Logic to handle the potential destruction of the fragment.
         if(savedInstanceState == null || !savedInstanceState.containsKey("friendPosts")) { // There is no saved data -> Likely this is a fresh start
             posts = new ArrayList<>();
-
-            friendsref.addValueEventListener(friendsEventListener);
-            postsref.addValueEventListener(postsEventListener);
         } else { // There was data saved previously -> Restore it
             posts = savedInstanceState.getParcelableArrayList("friendPosts");
         }
@@ -167,5 +164,19 @@ public class FriendContentFeedFragment extends Fragment {
         // Remove event listeners
         postsref.removeEventListener(postsEventListener);
         friendsref.removeEventListener(friendsEventListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        postsref.removeEventListener(postsEventListener);
+        friendsref.removeEventListener(friendsEventListener);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        friendsref.addValueEventListener(friendsEventListener);
+        postsref.addValueEventListener(postsEventListener);
     }
 }
