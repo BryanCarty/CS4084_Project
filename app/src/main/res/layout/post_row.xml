@@ -38,8 +38,8 @@
 
             <TextView
                 android:id="@+id/postDisplayName"
-                android:layout_width="180dp"
-                android:layout_height="28dp"
+                android:layout_width="310dp"
+                android:layout_height="26dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:text="Display Name"
