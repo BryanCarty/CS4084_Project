@@ -39,10 +39,12 @@ public class FriendContentFeedFragment extends Fragment {
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     DatabaseReference friendsref;
     DatabaseReference postsref;
+    DatabaseReference repliesref = db.child("replies");
     ValueEventListener friendsEventListener;
     ValueEventListener postsEventListener;
     String TAG = "FRIENDSFEED";
     Iterable<DataSnapshot> allPosts;
+    boolean doReverse = true;
 
     public FriendContentFeedFragment() {
         // Required empty public constructor
@@ -65,24 +67,27 @@ public class FriendContentFeedFragment extends Fragment {
                 posts.clear();
                 allPosts = snapshot.getChildren();
 
-                DatabaseReference repliesref = db.child("replies");
                 repliesref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onDataChange(@NonNull DataSnapshot snap) {
                         for(DataSnapshot ds : allPosts) {
                             ModelPost post = ds.getValue(ModelPost.class);
                             post.setPostID(ds.getKey());
-                            post.setReplyCount(snapshot.child(ds.getKey()).getChildrenCount());
+                            post.setReplyCount(snap.child(ds.getKey()).getChildrenCount());
 
                             if(friends.contains(post.userID)) {
                                 posts.add(post);
                             }
                         }
 
-                        Collections.reverse(posts);
-                        adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        if(doReverse) {
+                            Collections.reverse(posts);
+                            adapter = new FriendContentFeedPostsAdapter(getContext(), posts);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            doReverse = false;
+                        }
+
                     }
 
                     @Override
@@ -90,6 +95,7 @@ public class FriendContentFeedFragment extends Fragment {
                         Log.e(TAG,"Failed to retrieve Post reply count: " + error.getDetails());
                     }
                 });
+                doReverse = true;
             }
 
             @Override

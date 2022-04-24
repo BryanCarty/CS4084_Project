@@ -32,6 +32,7 @@ public class TrendingFragment extends Fragment {
     HomePostsAdapter adapter;
     DatabaseReference db = FirebaseDatabase.getInstance().getReference();
     DatabaseReference postsref = db.child("posts");
+    DatabaseReference repliesref = db.child("replies");
     ValueEventListener postValueListener;
     String TAG = "TRENDING";
     Iterable<DataSnapshot> allPosts;
@@ -49,7 +50,7 @@ public class TrendingFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 posts.clear(); // Clear out the previous list
                 allPosts = snapshot.getChildren();
-                DatabaseReference repliesref = db.child("replies");
+
                 repliesref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snap) {
