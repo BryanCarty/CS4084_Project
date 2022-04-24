@@ -31,6 +31,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Below is the fragment used by a user to send/cancel
+ * friend requests
+ */
 public class FindFriendsFragment extends Fragment {
 
     private RecyclerView rvFindFriends;
@@ -55,6 +59,11 @@ public class FindFriendsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_find_friends, container, false);
     }
 
+    /**
+     * Executes on successful creation of the view
+     * @param view
+     * @param savedInstanceState
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -79,6 +88,10 @@ public class FindFriendsFragment extends Fragment {
 
         Query query = databaseReference.orderByChild(NodeNames.NAME);
         query.addValueEventListener(new ValueEventListener() {
+            /**
+             * Listens for database changes in relation to sent/received friend requests.
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 findFriendModelList.clear();

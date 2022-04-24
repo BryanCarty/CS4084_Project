@@ -31,6 +31,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+/**
+ * Creates the send friend request recycler view.
+ *
+ */
 public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.FindFriendViewHolder> {
 
     private Context context;
@@ -40,11 +44,22 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
     private FirebaseUser currentUser;
     private  String userId;
 
+    /**
+     * FindFriendAdapter Constructor
+     * @param context
+     * @param findFriendModelList
+     */
     public FindFriendAdapter(Context context, List<FindFriendModel> findFriendModelList) {
         this.context = context;
         this.findFriendModelList = findFriendModelList;
     }
 
+    /**
+     * The below code executes on creation of the view holder.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public FindFriendAdapter.FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -52,6 +67,11 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
         return new FindFriendViewHolder(view);
     }
 
+    /**
+     * The below code executes on the binding of the view holder.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull final FindFriendAdapter.FindFriendViewHolder holder, int position) {
         final FindFriendModel friendModel = findFriendModelList.get(position);
@@ -61,6 +81,11 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
 
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("images/"+location[location.length-1]);
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            /**
+             * The below code executes when the download url for the specified file
+             * is acquired.
+             * @param uri
+             */
             @Override
             public void onSuccess(Uri uri) {
                 Glide.with(context)
@@ -84,7 +109,9 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
             holder.btnSendRequest.setVisibility(View.VISIBLE);
             holder.btnCancelRequest.setVisibility(View.GONE);
         }
-
+        /**
+         * The below code listens for a click of the send request button.
+         */
         holder.btnSendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,6 +169,9 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
             }
         });
 
+        /**
+         * The below code listens for the clicking of the cancel request button.
+         */
         holder.btnCancelRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,6 +233,10 @@ public class FindFriendAdapter extends RecyclerView.Adapter<FindFriendAdapter.Fi
         return findFriendModelList.size();
     }
 
+    /**
+     * The below code is the find friend view holder
+     * used in the above class.
+     */
     public class FindFriendViewHolder  extends  RecyclerView.ViewHolder{
         private ImageView ivProfile;
         private TextView tvFullName;

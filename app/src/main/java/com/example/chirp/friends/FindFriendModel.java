@@ -1,5 +1,9 @@
 package com.example.chirp.friends;
 
+/**
+ * Below is the class used to define an
+ * entry in the friend requests recycler view.
+ */
 public class FindFriendModel {
     private String userName;
     private String photoName;

@@ -36,6 +36,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
+/**
+ * This class allows the user to perform the necessary
+ * signup processes.
+ */
 public class SignupActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail, etName, etPassword, etConfirmPassword;
@@ -67,6 +71,11 @@ public class SignupActivity extends AppCompatActivity {
         confirmPasswordInputField = findViewById(R.id.confirmPasswordInputField);
     }
 
+    /**
+     * The below code executes when a user picks a profile image from
+     * their gallery.
+     * @param v
+     */
     public void pickImage(View v) {
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
@@ -92,6 +101,13 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if permission has been granted to allow the application to access
+     * the users gallery.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -112,7 +128,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * The below code creates an entry in the database with the users details.
+     * Specifically their name and profile image.
+     */
     private void updateNameAndPhoto()
     {
         String strFileName= firebaseUser.getUid() + ".jpg";
@@ -174,6 +193,10 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The below code creates an entry in the database with the users details.
+     * In this case it's just the users name.
+     */
     private void updateOnlyName() {
 
         progressBar.setVisibility(View.VISIBLE);
@@ -217,6 +240,10 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The below code executes when the signup button is clicked.
+     * @param v
+     */
     public void btnSignupClick(View v) {
         email = etEmail.getText().toString().trim();
         name = etName.getText().toString().trim();

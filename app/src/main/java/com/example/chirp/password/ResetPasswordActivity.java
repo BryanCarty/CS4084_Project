@@ -16,6 +16,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * The below code allows the user to reset their password if they
+ * were to forget it.
+ * This activity can be accessed without logging in and facilitates the
+ * sending of a link to the users email.
+ * Through this link the user can regain access to their account.
+ */
 public class ResetPasswordActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail;
@@ -37,6 +44,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
         btnRetry = findViewById(R.id.btnRetry);
         progressBar = findViewById(R.id.progressBarScreen);
     }
+
+    /**
+     * The below code executes when the user clicks the
+     * reset password button.
+     * @param view
+     */
     public  void btnResetPasswordClick(View view){
         final String email = etEmail.getText().toString().trim();
 
@@ -99,6 +112,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The below code executes when the user clicks the close
+     * button.
+     * @param view
+     */
     public void btnCloseClick(View view)
     {
         finish();

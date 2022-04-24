@@ -40,6 +40,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
+/**
+ * This class allows the user to perform the necessary
+ * profile processes.
+ * Such as, updating email, name and profile image.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
     private TextInputEditText etEmail, etName;
@@ -87,6 +92,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
     }
+
+    /**
+     * The below code executes when the user clicks the logout button.
+     * @param view
+     */
     public void btnLogoutClick(View view)
     {
         final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -119,8 +129,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * The below code executes when the user clicks the save button.
+     * @param view
+     */
     public void btnSaveClick(View view)
     {
         if(etName.getText().toString().trim().equals(""))
@@ -140,6 +152,11 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
     }
+
+    /**
+     * The below code executes when the user clicks on their profile image.
+     * @param view
+     */
     public void changeImage(View view)
     {
         if(serverFileUri==null)
@@ -171,6 +188,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    //Allows the user to choose another profile image
     private void pickImage() {
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
@@ -196,6 +214,13 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The below code checks to see if permission has been granted to access the
+     * users gallery.
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -215,6 +240,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The below code removes the users profile image.
+     */
     private  void removePhoto()
     {
         progressBar.setVisibility(View.VISIBLE);
@@ -257,7 +285,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * The below code updates the users name, email and profile image
+     * within the firebase database.
+     */
     private void updateNameEmailAndPhoto()
     {
         errorUpdatingEmail = false;
@@ -329,7 +360,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * The below code only updates the users name and email within the firebase database.
+     */
     private void updateNameAndEmail() {
         errorUpdatingEmail = false;
 
@@ -378,6 +411,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The below code executes on clicking the change password
+     * button.
+     * @param view
+     */
     public  void btnChangePasswordClick(View view)
     {
         startActivity(new Intent(ProfileActivity.this, ChangePasswordActivity.class));
