@@ -40,6 +40,7 @@ public class ViewPostActivity extends AppCompatActivity {
     ArrayList<ModelPost> replies = new ArrayList<>();
     RepliesAdapter adapter;
     RecyclerView recyclerView;
+    TextView replyCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +107,7 @@ public class ViewPostActivity extends AppCompatActivity {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
         TextView postTitle = findViewById(R.id.postTitle); // Title of the original post
-        TextView replyCount = findViewById(R.id.repliesCount);
+        replyCount = findViewById(R.id.repliesCount);
         TextInputEditText replyContent = findViewById(R.id.postReplyContent); // content of the user's reply
 
         // Error handling to prevent empty replies being accepted
@@ -134,6 +135,9 @@ public class ViewPostActivity extends AppCompatActivity {
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(getApplicationContext(), "Reply Published", Toast.LENGTH_LONG).show();
                     Log.d("NEWREPLY", "User has replied to a post");
+                    int currentCount = Integer.parseInt(replyCount.getText().toString().substring(9));
+                    currentCount++;
+                    replyCount.setText(String.format("Replies: %d", currentCount));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
