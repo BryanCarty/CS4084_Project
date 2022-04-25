@@ -1,10 +1,16 @@
 package com.example.chirp.chats;
 
+
 public class MessageModel {
     private String message;
     private String messageFrom;
     private long messageTime;
 
+    /*
+     Required empty constructor
+     If not here, there will be a runtime exception
+     for datasnapshot.getValue in onChildAdded within chat activity
+    */
     public MessageModel() {
     }
 
