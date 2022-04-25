@@ -27,6 +27,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         this.messageList = messageList;
     }
 
+    /* Used to inflate the message layout to show the messages*/
     @NonNull
     @Override
     public MessagesAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -34,6 +35,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         return new MessageViewHolder(view);
     }
 
+    /* Binds the relevant data to the message layout */
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MessageViewHolder holder, int position) {
 
@@ -42,12 +44,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
         String fromUserId = message.getMessageFrom();
+        /* Used to grab the timestamp for the message */
         SimpleDateFormat sfd = new SimpleDateFormat( "dd-MM-yyyy HH:mm");
 
         String datetime = sfd.format(new Date(message.getMessageTime()));
         String [] splitString = datetime.split(" ");
+        /* Used to get the time, not the date */
         String messageTime = splitString[1];
 
+        /* Checks if it is a sent message, hides the received message portion  and vice verse */
         if(fromUserId.equals(currentUserId)){
             holder.llSent.setVisibility(View.VISIBLE);
             holder.llReceived.setVisibility(View.GONE);
@@ -63,11 +68,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         }
     }
 
+    /* Returns the size of the message list */
     @Override
     public int getItemCount() {
         return messageList.size();
     }
 
+    /* Declares/initialises all the views that are present in the message layout xml file */
     public static class MessageViewHolder extends RecyclerView.ViewHolder{
 
         private final LinearLayout llSent;

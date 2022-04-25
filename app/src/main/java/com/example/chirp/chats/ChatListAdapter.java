@@ -24,6 +24,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+/* Functions as a bridge between the firebase database and the chat list view */
+
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder>{
 
     private final Context context;
@@ -34,6 +36,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         this.chatListModelList = chatListModelList;
     }
 
+    /* Used to inflate the chat list layout to show chats */
     @NonNull
     @Override
     public ChatListAdapter.ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,6 +44,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         return new ChatListViewHolder(view);
     }
 
+    /* Binds the relevant data to the chat list layout */
     @Override
     public void onBindViewHolder(@NonNull ChatListAdapter.ChatListViewHolder holder, int position) {
 
@@ -48,6 +52,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
         holder.textFullName.setText(chatListModel.getUserName());
 
+        /* Used to get the users profile image url and show it via getDownloadUrl */
         String[] arrSplit = chatListModel.getPhotoName().split("/");
         StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("images/"+arrSplit[arrSplit.length-1]);
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -61,15 +66,16 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
             }
         });
 
-        String lastMessage  = chatListModel.getLastMessage();
-        lastMessage = lastMessage.length()>30?lastMessage.substring(0,30):lastMessage;
-        holder.textLastMessage.setText(lastMessage);
-
+        /* Used to get the last message time */
         String lastMessageTime = chatListModel.getLastMessageTime();
         if(lastMessageTime==null) lastMessageTime="";
         if(!TextUtils.isEmpty(lastMessageTime))
             holder.textLastMessageTime.setText(Util.getTimeAgo(Long.parseLong(lastMessageTime)));
 
+        /*
+         If the unread count is not zero, then it will be displayed
+         If it is zero then it is removed/hidden
+        */
         if(!chatListModel.getUnreadCount().equals("0"))
         {
             holder.textUnreadCount.setVisibility(View.VISIBLE);
@@ -78,10 +84,17 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
         else
             holder.textUnreadCount.setVisibility(View.GONE);
 
+
+        /*
+         Is used to open the chat activity from anyone clicking on the linear
+         layout in the chat list layout
+        */
         holder.llChatList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /* Activity is opened via an intent */
                 Intent intent = new Intent(context, ChatActivity.class);
+                /* Gets the userId,userName and PhotoName from the list when the linear layout is clicked */
                 intent.putExtra(Extras.USER_KEY, chatListModel.getUserId());
                 intent.putExtra(Extras.USER_NAME, chatListModel.getUserName());
                 intent.putExtra(Extras.PHOTO_NAME, chatListModel.getPhotoName());
@@ -91,16 +104,17 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     }
 
+    /* Returns the size of the chat list */
     @Override
     public int getItemCount() {
         return chatListModelList.size();
     }
 
+    /* Declares/initialises all the views that are present in the chat list layout xml file */
     public static class ChatListViewHolder extends RecyclerView.ViewHolder {
 
         private final LinearLayout llChatList;
         private final TextView textFullName;
-        private final TextView textLastMessage;
         private final TextView textLastMessageTime;
         private final TextView textUnreadCount;
         private final ImageView ivProfile;
@@ -110,7 +124,6 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
             llChatList = itemView.findViewById(R.id.llChatList);
             textFullName = itemView.findViewById(R.id.textFullName);
-            textLastMessage = itemView.findViewById(R.id.textLastMessage);
             textLastMessageTime = itemView.findViewById(R.id.textLastMessageTime);
             textUnreadCount = itemView.findViewById(R.id.textUnreadCount);
             ivProfile = itemView.findViewById(R.id.ivProfile);
